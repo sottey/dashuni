@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "{{ .Name }}",
-    "description": "{{ .Description }}"
+    "title": "{{ .Site.Name }}",
+    "description": "{{ .Site.Description }}"
   },
   "links": [
     {{- $first := true -}}
-    {{- range .Pages }}
+    {{- range .Site.Pages }}
       {{- range .Sections }}
         {{- range .Items }}
           {{- if not $first }},{{ end }}

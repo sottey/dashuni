@@ -1,19 +1,29 @@
-title: "{{ .Name }}"
-subtitle: "{{ .Description }}"
-logo: "{{ .Favicon }}"
-theme: "{{ .Theme }}"
+{{/* requiresFA: true */}}
+
+title: "{{ .Site.Name }}"
+subtitle: "{{ .Site.Description }}"
+logo: "{{ .Site.Favicon }}"
+theme: "{{ .Site.Theme }}"
 
 services:
-{{- range .Pages }}
+{{- range .Site.Pages }}
   {{- range .Sections }}
   - name: "{{ .Title }}"
     icon: "{{ .Icon }}"
     items:
-    {{- range .Items }}
+      {{- range .Items }}
+      {{- $faIcon := index $.FAMap .Title }}
+      {{- if $faIcon }}
+      - name: "{{ .Title }}"
+        subtitle: "{{ .Description }}"
+        icon: "{{ $faIcon }}"
+        url: "{{ .URL }}"
+      {{- else }}
       - name: "{{ .Title }}"
         subtitle: "{{ .Description }}"
         icon: "{{ .Icon }}"
         url: "{{ .URL }}"
-    {{- end }}
+      {{- end }}
+      {{- end }}
   {{- end }}
 {{- end }}

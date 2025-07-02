@@ -1,0 +1,16 @@
+{
+    "Dockge": "fas fa-server",
+    "FreshRSS": "fas fa-rss",
+    "Hoarder": "fas fa-box",
+    "VaultWarden": "fas fa-lock",
+    "DrawDB": "fas fa-project-diagram",
+    "Forgejo": "fas fa-code-branch",
+    "StringJS": "fas fa-code",
+    "MySQL": "fas fa-database",
+    "Photon": "fas fa-bolt",
+    "CoreControl": "fas fa-cogs",
+    "DumbAssets": "fas fa-boxes",
+    "AudioBookshelf": "fas fa-book",
+    "Immich": "fas fa-images",
+    "Windows": "fab fa-windows"
+  }

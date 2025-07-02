@@ -1,92 +1,47 @@
-# 🧭 dashuni
+# Dashuni
 
-> **dashuni** is a CLI tool written in Go to help you *convert a universal homelab dashboard schema* into the config formats of different dashboard apps.
+**Dashuni** is a universal converter for homelab dashboard configs.  
 
-No more retyping your entire server and service list when you switch dashboards!  
+You define your homelab data in a single, simple JSON schema, then use Dashuni to render config files for any supported dashboard by applying a Go template.  
 
 ---
 
 ## ⭐️ Features
 
-✅ Define your servers, services, and bookmarks in a single **universal JSON schema**  
-✅ Convert to multiple dashboards using **mapping templates**  
-✅ Add new dashboards just by adding a template file—no recompiling required!  
-✅ Simple, scriptable CLI  
+✅ Single source of truth for your homelab inventory  
+✅ Supports multiple dashboard formats (Dashy, Homer, Honey, Labdash, Starbase, MAFL, etc.)  
+✅ Clean, flexible Go templates  
+✅ Optional Font Awesome icon mapping for dashboards that need it  
+✅ Fully CLI-driven  
 
 ---
 
 ## 🚀 Installation
 
-Clone the repository:
-
 ```bash
 git clone https://github.com/sottey/dashuni.git
 cd dashuni
-```
-
-Build it:
-
-```bash
 go build -o dashuni
-```
-
-Now you can run:
-
-```bash
-./dashuni
 ```
 
 ---
 
 ## ✅ Usage
 
-```
-dashuni [command] [flags]
-```
-
-### 📌 Commands
-
-#### 1️⃣ convert
-
-Render your universal JSON schema using a mapping template:
-
-```
-dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy-config.yml
+```bash
+./dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy-config.yml
 ```
 
-**Flags:**
-- `--input, -i` : Path to your universal site JSON
-- `--mapping, -m` : Path to the Go text/template mapping file
-- `--output, -o` : Path to write the rendered config
+**Options:**
+- `--input` : your universal JSON description of the homelab
+- `--mapping` : the Go text/template file to convert to your dashboard's config format
+- `--output` : file to write the converted config to
 
 ---
 
-#### 2️⃣ validate
+## 📌 Input Schema
 
-Check that your universal JSON schema is valid:
-
-```
-dashuni validate --input sample.json
-```
-
-**Flags:**
-- `--input, -i` : Path to your universal site JSON
-
----
-
-#### 3️⃣ list
-
-List available mapping templates:
-
-```
-dashuni list
-```
-
----
-
-## ✅ Example Universal Schema
-
-Example `sample.json`:
+Your universal JSON should look like this:
 
 ```json
 {
@@ -95,21 +50,20 @@ Example `sample.json`:
     "description": "A dashboard for managing my home lab services",
     "favicon": "https://example.com/favicon.ico",
     "theme": "auto",
-    "baseURL": "https://mydashboard.local",
     "version": "1.0.0",
     "pages": [
       {
-        "title": "Main",
+        "title": "Infrastructure",
         "sections": [
           {
-            "title": "Grump",
-            "icon": "https://example.com/icons/grump.png",
+            "title": "Monitoring",
             "items": [
               {
-                "title": "Dockge",
-                "url": "http://192.168.7.212:8081",
-                "icon": "https://exmaple.com/icons/dockge.png",
-                "description": "Dockge on Grump",
+                "title": "Grafana",
+                "description": "Metrics and dashboards",
+                "url": "https://grafana.local",
+                "pingURL": "https://grafana.local/api/health",
+                "icon": "https://example.com/icons/grafana.png",
                 "target": "_blank"
               }
             ]
@@ -123,140 +77,115 @@ Example `sample.json`:
 
 ---
 
-## ✅ Mapping Templates
+## ✅ Template Data
 
-Mapping templates live in the `mappings/` folder. They are standard Go `text/template` files.
-
-Example structure:
+Every template is executed with **this data**:
 
 ```
-mappings/
-  dashy.tmpl
-  homer.tmpl
-  honey.tmpl
-  labdash.tmpl
-  mafl.tmpl
-  starbase.tmpl
+.
+├── Site  (*model.Site)
+│   ├── Name
+│   ├── Description
+│   ├── Favicon
+│   ├── Theme
+│   ├── Pages
+│       ├── Sections
+│           ├── Items
+└── FAMap (optional map[string]string)
 ```
 
-Each template converts the universal schema into the specific dashboard’s config format.
+✅ Templates must use `.Site` prefix:
+
+```gotemplate
+.Site.Name
+.Site.Pages
+```
+
+✅ Example:
+
+```gotemplate
+title: "{{ .Site.Name }}"
+theme: "{{ .Site.Theme }}"
+```
 
 ---
 
-## ✅ Adding New Dashboards
+## ✅ Font Awesome Mapping
 
-To add a new target dashboard:
+Dashuni supports *optional* FA icon mappings for dashboards like **Homer** that don't accept icon URLs.
 
-1. Create a new Go text/template file in `mappings/`.
-2. Write your mapping using the universal schema model.
-3. No recompilation needed—just use:
+⭐ Simply add this comment to the top of your template:
 
+```gotemplate
+{{/* requiresFA: true */}}
 ```
-dashuni convert --input your.json --mapping mappings/new.tmpl --output new-config.yml
+
+✅ Dashuni will automatically:
+- Detect the header
+- Load `./mappings/fa-mapping.json`
+- Make the mapping available to your template as `.FAMap`
+
+✅ Example template logic:
+
+```gotemplate
+{{ $faIcon := index $.FAMap .Title }}
+{{ if $faIcon }}
+icon: "{{ $faIcon }}"
+{{ else }}
+icon: "{{ .Icon }}"
+{{ end }}
 ```
 
 ---
 
-## ✅ Example Templates
+## ✅ ./mappings/fa-mapping.json Example
 
-✅ Dashy:
-- sections with items
-- supports status check
+```json
+{
+  "Dockge": "fas fa-server",
+  "FreshRSS": "fas fa-rss",
+  "VaultWarden": "fas fa-lock"
+}
+```
 
-✅ Homer:
-- sections with items
-- subtitle field
+---
 
-✅ Honey:
-- flat list of services
-- no sections
+## ✅ Writing Templates
 
-✅ LabDash:
-- page layout with desktop grid
+- Templates can embed mapping logic, target mapping, etc.  
+- Example target mapping in Dashy:
 
-✅ Mafl:
-- YAML map of sections with service lists
+```gotemplate
+{{ $targetMap := dict "_blank" "newtab" "_self" "sametab" "_top" "top" }}
+target: "{{ index $targetMap .Target }}"
+```
 
-✅ Starbase:
-- JSON meta with flat links array
+---
+
+## ✅ Example Commands
+
+✅ For Dashy:
+
+```bash
+./dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy.yml
+```
+
+✅ For Homer (auto-detects FA mapping):
+
+```bash
+./dashuni convert --input sample.json --mapping mappings/homer.tmpl --output homer.yml
+```
 
 ---
 
 ## ✅ Contributing
 
-PRs welcome!
-
-✅ Add new templates  
-✅ Improve CLI  
-✅ Add features
+⭐ PRs welcome  
+⭐ Add new dashboard templates  
+⭐ Help refine the schema  
 
 ---
 
-## ✅ License
+## 📜 License
 
 MIT
-
----
-
-## ⭐️ Author
-[sottey on GitHub](https://github.com/sottey/dashuni)
-
-
----
-
-## ✅ Quick Start
-
-✔️ Build:
-
-```bash
-go build -o dashuni
-```
-
-✔️ Validate your universal config:
-
-```bash
-./dashuni validate --input sample.json
-```
-
-✔️ Convert to Dashy:
-
-```bash
-./dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy-config.yml
-```
-
-✔️ Convert to Homer:
-
-```bash
-./dashuni convert --input sample.json --mapping mappings/homer.tmpl --output homer-config.yml
-```
-
-✔️ List available templates:
-
-```bash
-./dashuni list
-```
-
----
-
-## ✅ Roadmap
-
-✅ Validate universal JSON  
-✅ Mapping templates for:
-  - Dashy
-  - Homer
-  - Honey
-  - LabDash
-  - Mafl
-  - Starbase
-
-✅ CLI `list` command  
-✅ Future ideas:
-- More template variables and helpers
-- Remote template repo support
-
----
-
-## ❤️ Why?
-
-Because no one wants to manually recreate dashboards every time they switch apps.  
-**Define once. Convert anywhere.**

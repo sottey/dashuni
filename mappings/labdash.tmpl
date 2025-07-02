@@ -1,7 +1,7 @@
 {
   "pages": [
     {{- $firstPage := true -}}
-    {{- range .Pages }}
+    {{- range .Site.Pages }}
       {{- if not $firstPage }},{{ end }}
       {
         "name": "{{ .Title }}",

@@ -1,24 +1,26 @@
+{{ $targetMap := dict "_blank" "newtab" "_self" "sametab" "_top" "top" }}
+
 appConfig:
-  theme: "{{ .Theme }}"
+  theme: "{{ .Site.Theme }}"
 
 pageInfo:
-  title: "{{ .Name }}"
+  title: "{{ .Site.Name }}"
+  description: "{{ .Site.Description }}"
+  logo: "{{ .Site.Favicon }}"
 
 sections:
-{{- range .Pages }}
+{{- range .Site.Pages }}
   {{- range .Sections }}
   - name: "{{ .Title }}"
     icon: "{{ .Icon }}"
     items:
-    {{- range .Items }}
+      {{- range .Items }}
       - title: "{{ .Title }}"
         description: "{{ .Description }}"
         icon: "{{ .Icon }}"
         url: "{{ .URL }}"
-        target: "{{ .Target }}"
-        {{- if .PingURL }}
+        target: "{{ index $targetMap .Target }}"
         statusCheck: "{{ .PingURL }}"
-        {{- end }}
-    {{- end }}
+      {{- end }}
   {{- end }}
 {{- end }}

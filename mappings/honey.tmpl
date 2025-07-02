@@ -1,12 +1,12 @@
 {
   "ui": {
-    "name": "{{ .Name }}",
-    "desc": "{{ .Description }}",
-    "icon": "{{ .Favicon }}"
+    "name": "{{ .Site.Name }}",
+    "desc": "{{ .Site.Description }}",
+    "icon": "{{ .Site.Favicon }}"
   },
   "services": [
     {{- $first := true -}}
-    {{- range .Pages }}
+    {{- range .Site.Pages }}
       {{- range .Sections }}
         {{- range .Items }}
           {{- if not $first }},{{ end }}
