@@ -23,35 +23,47 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/sottey/dashuni/internal/parser"
 )
 
-// validateCmd represents the validate command
+var validateInput string
+
 var validateCmd = &cobra.Command{
 	Use:   "validate",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Validate your universal site JSON schema",
+	Long:  `Validate will check that your universal homelab schema JSON is well-formed.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("validate called")
+		if validateInput == "" {
+			fmt.Println("❌ Error: --input is required")
+			cmd.Usage()
+			os.Exit(1)
+		}
+
+		root, err := parser.LoadRootFromFile(validateInput)
+		if err != nil {
+			fmt.Printf("❌ Failed to load or parse JSON: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Basic built-in validation (could be expanded)
+		if root.Site.Name == "" {
+			fmt.Println("❌ Validation error: site.name is required")
+			os.Exit(1)
+		}
+		if len(root.Site.Pages) == 0 {
+			fmt.Println("❌ Validation error: site.pages must not be empty")
+			os.Exit(1)
+		}
+
+		fmt.Println("✅ Validation successful!")
 	},
 }
 
 func init() {
+	validateCmd.Flags().StringVarP(&validateInput, "input", "i", "", "Path to universal site JSON input")
 	rootCmd.AddCommand(validateCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// validateCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// validateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

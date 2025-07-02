@@ -23,35 +23,60 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/sottey/dashuni/internal/converter"
+	"github.com/sottey/dashuni/internal/parser"
 )
 
-// convertCmd represents the convert command
+var (
+	inputFile   string
+	mappingFile string
+	outputFile  string
+)
+
 var convertCmd = &cobra.Command{
 	Use:   "convert",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Convert your universal site schema using a mapping template",
+	Long: `Convert takes your universal homelab site JSON 
+and renders it to another dashboard's config format using a Go text/template mapping.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("convert called")
+		if inputFile == "" || mappingFile == "" || outputFile == "" {
+			fmt.Println("❌ Error: --input, --mapping, and --output are required")
+			cmd.Usage()
+			os.Exit(1)
+		}
+
+		// Load the universal site schema
+		root, err := parser.LoadRootFromFile(inputFile)
+		if err != nil {
+			fmt.Printf("❌ Failed to load input: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Apply the mapping template
+		result, err := converter.ApplyTemplate(&root.Site, mappingFile)
+		if err != nil {
+			fmt.Printf("❌ Conversion failed: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Write the output
+		err = os.WriteFile(outputFile, []byte(result), 0644)
+		if err != nil {
+			fmt.Printf("❌ Failed to write output: %v\n", err)
+			os.Exit(1)
+		}
+
+		fmt.Printf("✅ Conversion successful! Output written to %s\n", outputFile)
 	},
 }
 
 func init() {
+	convertCmd.Flags().StringVarP(&inputFile, "input", "i", "", "Path to universal site JSON input")
+	convertCmd.Flags().StringVarP(&mappingFile, "mapping", "m", "", "Path to mapping template file")
+	convertCmd.Flags().StringVarP(&outputFile, "output", "o", "", "Path to output file")
 	rootCmd.AddCommand(convertCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// convertCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// convertCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

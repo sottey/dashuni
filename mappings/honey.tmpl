@@ -1,0 +1,24 @@
+{
+  "ui": {
+    "name": "{{ .Name }}",
+    "desc": "{{ .Description }}",
+    "icon": "{{ .Favicon }}"
+  },
+  "services": [
+    {{- $first := true -}}
+    {{- range .Pages }}
+      {{- range .Sections }}
+        {{- range .Items }}
+          {{- if not $first }},{{ end }}
+          {
+            "name": "{{ .Title }}",
+            "desc": "{{ .Description }}",
+            "href": "{{ .URL }}",
+            "icon": "{{ .Icon }}"
+          }
+          {{- $first = false }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  ]
+}

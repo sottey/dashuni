@@ -36,15 +36,11 @@ func ApplyTemplate(site *model.Site, mappingPath string) (string, error) {
 }
 
 // templateFuncs returns custom template functions if needed.
-// You can extend this as you wish.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"upper": func(s string) string {
-			return strings.ToUpper(s)
-		},
-		"lower": func(s string) string {
-			return strings.ToLower(s)
-		},
-		// Add more custom helpers here as needed
+		"upper": strings.ToUpper,
+		"lower": strings.ToLower,
+		"trim":  strings.TrimSpace,
+		// Add more helpers here as needed
 	}
 }

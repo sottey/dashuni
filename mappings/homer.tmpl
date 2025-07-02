@@ -1,0 +1,19 @@
+title: "{{ .Name }}"
+subtitle: "{{ .Description }}"
+logo: "{{ .Favicon }}"
+theme: "{{ .Theme }}"
+
+services:
+{{- range .Pages }}
+  {{- range .Sections }}
+  - name: "{{ .Title }}"
+    icon: "{{ .Icon }}"
+    items:
+    {{- range .Items }}
+      - name: "{{ .Title }}"
+        subtitle: "{{ .Description }}"
+        icon: "{{ .Icon }}"
+        url: "{{ .URL }}"
+    {{- end }}
+  {{- end }}
+{{- end }}

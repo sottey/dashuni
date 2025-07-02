@@ -1,0 +1,33 @@
+{
+  "pages": [
+    {{- $firstPage := true -}}
+    {{- range .Pages }}
+      {{- if not $firstPage }},{{ end }}
+      {
+        "name": "{{ .Title }}",
+        "layout": {
+          "desktop": [
+            {{- $firstItem := true -}}
+            {{- range .Sections }}
+              {{- range .Items }}
+                {{- if not $firstItem }},{{ end }}
+                {
+                  "label": "{{ .Title }}",
+                  "url": "{{ .URL }}",
+                  "icon": "{{ .Icon }}",
+                  {{- if .PingURL }}
+                  "healthUrl": "{{ .PingURL }}"
+                  {{- else }}
+                  "healthUrl": ""
+                  {{- end }}
+                }
+                {{- $firstItem = false }}
+              {{- end }}
+            {{- end }}
+          ]
+        }
+      }
+      {{- $firstPage = false }}
+    {{- end }}
+  ]
+}

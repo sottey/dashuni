@@ -1,0 +1,14 @@
+title: "{{ .Name }}"
+
+services:
+{{- range .Pages }}
+  {{- range .Sections }}
+  {{ .Title }}:
+    {{- range .Items }}
+    - title: "{{ .Title }}"
+      description: "{{ .Description }}"
+      link: "{{ .URL }}"
+      icon: "{{ .Icon }}"
+    {{- end }}
+  {{- end }}
+{{- end }}

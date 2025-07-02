@@ -1,0 +1,24 @@
+appConfig:
+  theme: "{{ .Theme }}"
+
+pageInfo:
+  title: "{{ .Name }}"
+
+sections:
+{{- range .Pages }}
+  {{- range .Sections }}
+  - name: "{{ .Title }}"
+    icon: "{{ .Icon }}"
+    items:
+    {{- range .Items }}
+      - title: "{{ .Title }}"
+        description: "{{ .Description }}"
+        icon: "{{ .Icon }}"
+        url: "{{ .URL }}"
+        target: "{{ .Target }}"
+        {{- if .PingURL }}
+        statusCheck: "{{ .PingURL }}"
+        {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
