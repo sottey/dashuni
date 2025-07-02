@@ -17,7 +17,7 @@ No more retyping your entire server and service list when you switch dashboards!
 
 ## 🚀 Installation
 
-First, clone the repository:
+Clone the repository:
 
 ```bash
 git clone https://github.com/sottey/dashuni.git
@@ -30,7 +30,11 @@ Build it:
 go build -o dashuni
 ```
 
-You can now run `./dashuni` locally.
+Now you can run:
+
+```bash
+./dashuni
+```
 
 ---
 
@@ -43,7 +47,8 @@ dashuni [command] [flags]
 ### 📌 Commands
 
 #### 1️⃣ convert
-Render your universal JSON schema using a mapping template.
+
+Render your universal JSON schema using a mapping template:
 
 ```
 dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy-config.yml
@@ -52,12 +57,13 @@ dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy
 **Flags:**
 - `--input, -i` : Path to your universal site JSON
 - `--mapping, -m` : Path to the Go text/template mapping file
-- `--output, -o` : Where to write the rendered config
+- `--output, -o` : Path to write the rendered config
 
 ---
 
 #### 2️⃣ validate
-Check that your universal JSON schema is valid.
+
+Check that your universal JSON schema is valid:
 
 ```
 dashuni validate --input sample.json
@@ -68,14 +74,13 @@ dashuni validate --input sample.json
 
 ---
 
-#### 3️⃣ list *(planned)*
-List available mapping templates.
+#### 3️⃣ list
+
+List available mapping templates:
 
 ```
 dashuni list
 ```
-
-*(Future version)*
 
 ---
 
@@ -122,7 +127,7 @@ Example `sample.json`:
 
 Mapping templates live in the `mappings/` folder. They are standard Go `text/template` files.
 
-Examples you might include:
+Example structure:
 
 ```
 mappings/
@@ -152,6 +157,31 @@ dashuni convert --input your.json --mapping mappings/new.tmpl --output new-confi
 
 ---
 
+## ✅ Example Templates
+
+✅ Dashy:
+- sections with items
+- supports status check
+
+✅ Homer:
+- sections with items
+- subtitle field
+
+✅ Honey:
+- flat list of services
+- no sections
+
+✅ LabDash:
+- page layout with desktop grid
+
+✅ Mafl:
+- YAML map of sections with service lists
+
+✅ Starbase:
+- JSON meta with flat links array
+
+---
+
 ## ✅ Contributing
 
 PRs welcome!
@@ -169,9 +199,8 @@ MIT
 ---
 
 ## ⭐️ Author
+[sottey on GitHub](https://github.com/sottey/dashuni)
 
-sottey  
-[sottey on GitHub](https://github.com/sottey)
 
 ---
 
@@ -201,21 +230,29 @@ go build -o dashuni
 ./dashuni convert --input sample.json --mapping mappings/homer.tmpl --output homer-config.yml
 ```
 
+✔️ List available templates:
+
+```bash
+./dashuni list
+```
+
 ---
 
 ## ✅ Roadmap
 
 ✅ Validate universal JSON  
 ✅ Mapping templates for:
-- Dashy
-- Homer
-- Honey
-- LabDash
-- Mafl (planned)
-- Starbase (planned)
+  - Dashy
+  - Homer
+  - Honey
+  - LabDash
+  - Mafl
+  - Starbase
 
-✅ CLI `list` command (planned)  
-✅ Template variables and helpers
+✅ CLI `list` command  
+✅ Future ideas:
+- More template variables and helpers
+- Remote template repo support
 
 ---
 
