@@ -1,0 +1,149 @@
+{
+  "site": {
+    "metadata": {
+      "exportedBy": "homelabgen",
+      "exportedAt": "2025-07-01T12:00:00Z",
+      "owner": "Sean"      
+    },
+    "name": "My Home Lab Dashboard",
+    "description": "A dashboard for managing my home lab services",
+    "favicon": "https://example.com/favicon.ico",
+    "theme": "auto",
+    "baseURL": "https://mydashboard.local",
+    "version": "1.0.0",
+    "pages": [
+      {
+        "title": "Home Lab",
+        "logo": "https://example.com/logo-homelab.png",
+        "description": "Primary services in my homelab",
+        "sections": [
+          {
+            "order": 1,
+            "title": "Media Servers",
+            "description": "Streaming and media storage",
+            "icon": "https://example.com/icons/media.png",
+            "items": [
+              {
+                "order": 1,
+                "title": "Plex",
+                "shortTitle": "Plex",
+                "url": "https://plex.local",
+                "pingURL": "https://plex.local/status",
+                "icon": "https://example.com/icons/plex.png",
+                "description": "Self-hosted media server",
+                "tags": ["media", "video"],
+                "target": "_blank"
+              },
+              {
+                "order": 2,
+                "title": "Jellyfin",
+                "shortTitle": "Jelly",
+                "url": "https://jellyfin.local",
+                "pingURL": "https://jellyfin.local/ping",
+                "icon": "https://example.com/icons/jellyfin.png",
+                "description": "Free software media system",
+                "tags": ["media", "streaming"],
+                "target": "_blank"
+              }
+            ]
+          },
+          {
+            "order": 2,
+            "title": "File Storage",
+            "description": "My NAS and file services",
+            "icon": "https://example.com/icons/storage.png",
+            "items": [
+              {
+                "title": "Nextcloud",
+                "shortTitle": "NC",
+                "url": "https://nextcloud.local",
+                "pingURL": "https://nextcloud.local/status",
+                "icon": "https://example.com/icons/nextcloud.png",
+                "description": "Private file sharing",
+                "tags": ["storage", "cloud"],
+                "target": "_blank"
+              },
+              {
+                "title": "Syncthing",
+                "shortTitle": "Sync",
+                "url": "https://syncthing.local",
+                "pingURL": "https://syncthing.local/status",
+                "icon": "https://example.com/icons/syncthing.png",
+                "description": "File synchronization",
+                "tags": ["storage", "sync"],
+                "target": "_blank"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "order": 2,
+        "title": "Infrastructure",
+        "logo": "https://example.com/logo-infra.png",
+        "description": "Admin and monitoring tools",
+        "sections": [
+          {
+            "title": "Monitoring",
+            "description": "Health and metrics dashboards",
+            "icon": "https://example.com/icons/monitoring.png",
+            "items": [
+              {
+                "order": 1,
+                "title": "Grafana",
+                "shortTitle": "Graf",
+                "url": "https://grafana.local",
+                "pingURL": "https://grafana.local/api/health",
+                "icon": "https://example.com/icons/grafana.png",
+                "description": "Metrics and dashboards",
+                "tags": ["monitoring", "metrics"],
+                "target": "_blank"
+              },
+              {
+                "order": 2,
+                "title": "Prometheus",
+                "shortTitle": "Prom",
+                "url": "https://prometheus.local",
+                "pingURL": "https://prometheus.local/-/healthy",
+                "icon": "https://example.com/icons/prometheus.png",
+                "description": "Time series monitoring",
+                "tags": ["monitoring", "timeseries"],
+                "target": "_blank"
+              }
+            ]
+          },
+          {
+            "order": 3,
+            "title": "Management",
+            "description": "Admin interfaces",
+            "icon": "https://example.com/icons/management.png",
+            "items": [
+              {
+                "order": 1,
+                "title": "Portainer",
+                "shortTitle": "Port",
+                "url": "https://portainer.local",
+                "pingURL": "https://portainer.local/api/status",
+                "icon": "https://example.com/icons/portainer.png",
+                "description": "Docker management UI",
+                "tags": ["docker", "admin"],
+                "target": "_blank"
+              },
+              {
+                "order": 2,
+                "title": "Cockpit",
+                "shortTitle": "Cockpit",
+                "url": "https://cockpit.local",
+                "pingURL": "https://cockpit.local/ping",
+                "icon": "https://example.com/icons/cockpit.png",
+                "description": "Server administration",
+                "tags": ["server", "admin"],
+                "target": "_blank"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
