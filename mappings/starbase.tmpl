@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "title": "{{ .Name }}",
+    "description": "{{ .Description }}"
+  },
+  "links": [
+    {{- $first := true -}}
+    {{- range .Pages }}
+      {{- range .Sections }}
+        {{- range .Items }}
+          {{- if not $first }},{{ end }}
+          {
+            "title": "{{ .Title }}",
+            "subtitle": "{{ .Description }}",
+            "url": "{{ .URL }}",
+            "icon": "{{ .Icon }}"
+          }
+          {{- $first = false }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  ]
+}
