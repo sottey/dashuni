@@ -51,6 +51,7 @@ Out of the box, Dashuni can generate configs for:
 - [**GetHomepage**](https://github.com/gethomepage/homepage)
 - [**Jump**](https://github.com/daledavies/jump)
 - [**Glance**](https://github.com/glanceapp/glance)
+- [**Easy-Gate**](https://github.com/wiredlush/easy-gate)
 
 And it’s easy to add more!
 

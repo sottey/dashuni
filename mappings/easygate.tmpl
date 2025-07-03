@@ -1,0 +1,20 @@
+addr: 0.0.0.0:8880
+use_tls: false
+cert_file: ""
+key_file: ""
+behind_proxy: false
+title: {{ .Site.Name }}
+theme:
+  background: "#000000"
+  foreground: "#FFFFFF"
+services:
+  {{- range .Site.Pages }}
+    {{- range $section := .Sections }}
+      {{- range $item := $section.Items }}
+  - name: "{{ $item.Title }}"
+    category: "{{ $section.Title }}"
+    url: "{{ $item.URL }}"
+    icon: "{{ $item.Icon }}"
+      {{- end }}
+    {{- end }}
+  {{- end }}
