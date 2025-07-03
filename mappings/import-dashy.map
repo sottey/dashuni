@@ -1,0 +1,7 @@
+{
+  "site.theme": "appConfig.theme",
+  "site.name": "pageInfo.title",
+  "site.pages[].sections[].title": "sections[].name",
+  "site.pages[].sections[].items[].title": "sections[].items[].title",
+  "site.pages[].sections[].items[].url": "sections[].items[].url"
+}
