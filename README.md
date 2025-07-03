@@ -50,6 +50,7 @@ Out of the box, Dashuni can generate configs for:
 - [**Hiccup**](https://github.com/ashwin-pc/hiccup)  
 - [**GetHomepage**](https://github.com/gethomepage/homepage)
 - [**Jump**](https://github.com/daledavies/jump)
+- [**Glance**](https://github.com/glanceapp/glance)
 
 And it’s easy to add more!
 

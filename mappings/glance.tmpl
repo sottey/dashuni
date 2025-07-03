@@ -1,0 +1,22 @@
+pages:
+  - name: '{{ .Site.Name }}'
+    width: 'slim'
+    hide-desktop-navigation: true
+    center-vertically: true
+    columns:
+      - size: 'full'
+        widgets:
+          {{- range .Site.Pages }}
+            {{- range .Sections }}
+              - type: 'monitor'
+                cache: '1m'
+                title: '{{ .Title }}'
+                sites:
+                  {{- range .Items }}
+                  - title: '{{ .Title }}'
+                    name: '{{ .Title }}'
+                    url: '{{ .URL }}'
+                    icon: 'sh:{{ lower .Title }}'
+                  {{- end }}
+            {{- end }}
+          {{- end }}
