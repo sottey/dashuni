@@ -1,0 +1,44 @@
+{
+  "version": "3.0.0",
+  "defaultTitle": "{{ .Site.Name }}",
+  "url": "./configs/config.json",
+  "featured": [
+    {{- $first := true -}}
+    {{- range .Site.Pages }}
+      {{- range .Sections }}
+        {{- range .Items }}
+          {{- if not $first }},{{ end }}
+          {
+            "name": "{{ .Title }}",
+            "link": "{{ .URL }}",
+            "background": "{{ .Icon }}"
+          }
+          {{- $first = false }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  ],
+  "categories": [
+    {{- $firstCat := true -}}
+    {{- range .Site.Pages }}
+      {{- range .Sections }}
+        {{- if not $firstCat }},{{ end }}
+        {
+          "title": "{{ .Title }}",
+          "links": [
+            {{- $firstLink := true -}}
+            {{- range .Items }}
+              {{- if not $firstLink }},{{ end }}
+              {
+                "name": "{{ .Title }}",
+                "link": "{{ .URL }}"
+              }
+              {{- $firstLink = false }}
+            {{- end }}
+          ]
+        }
+        {{- $firstCat = false }}
+      {{- end }}
+    {{- end }}
+  ]
+}

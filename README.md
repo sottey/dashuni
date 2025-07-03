@@ -1,69 +1,88 @@
-# Dashuni
+# 🎨 Dashuni
 
-**Dashuni** is a universal converter for homelab dashboard configs.  
+Welcome to **Dashuni** — your universal *dashboard config converter* for the homelab world!
 
-You define your homelab data in a single, simple JSON schema, then use Dashuni to render config files for any supported dashboard by applying a Go template.  
+Ever switch from **Dashy** to **Homer** to **Honey** to **Starbase** and think:
 
----
+> *“I really don’t want to re-enter my 50 services again…”*
 
-## ⭐️ Features
-
-✅ Single source of truth for your homelab inventory  
-✅ Supports multiple dashboard formats (Dashy, Homer, Honey, Labdash, Starbase, MAFL, etc.)  
-✅ Clean, flexible Go templates  
-✅ Optional Font Awesome icon mapping for dashboards that need it  
-✅ Fully CLI-driven  
+Dashuni *solves* that. You keep one single source of truth about your servers, services, and bookmarks, and Dashuni generates the correct config for your favorite dashboard.
 
 ---
 
-## 🚀 Installation
+## 🚀 What is Dashuni?
 
-```bash
-git clone https://github.com/sottey/dashuni.git
-cd dashuni
-go build -o dashuni
-```
+Dashuni is a command-line tool written in Go. It takes a **universal JSON** describing your homelab layout and services, then uses **Go templates** to convert that into the native config formats for dozens of popular dashboards.
 
----
-
-## ✅ Usage
-
-```bash
-./dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy-config.yml
-```
-
-**Options:**
-- `--input` : your universal JSON description of the homelab
-- `--mapping` : the Go text/template file to convert to your dashboard's config format
-- `--output` : file to write the converted config to
+✅ One source of truth.  
+✅ Export to anything.  
+✅ No more tedious re-entry.
 
 ---
 
-## 📌 Input Schema
+## ⭐️ Key Features
 
-Your universal JSON should look like this:
+✨ Convert your homelab service list to **many dashboards**  
+✨ Templated and **extensible**  
+✨ Supports **icon mapping** (for Font Awesome, MDI, Simple Icons)  
+✨ Easy **CLI** usage  
+✨ Fast and scriptable  
+✨ Bring your *own templates* to add new dashboards!
+
+---
+
+## 📦 Supported Dashboards
+
+Out of the box, Dashuni can generate configs for:
+
+- [**Dashy**](https://github.com/Lissy93/dashy)
+- [**Homer**](https://github.com/bastienwirtz/homer)  
+- [**Honey**](https://github.com/dani3l0/honey)  
+- [**LabDash**](https://github.com/AnthonyGress/lab-dash)  
+- [**MAFL**](https://github.com/hywax/mafl)  
+- [**Starbase**](https://github.com/notclickable-jordan/starbase-80)  
+- [**Hiccup**](https://github.com/ashwin-pc/hiccup)  
+- [**GetHomepage**](https://github.com/gethomepage/homepage)
+
+And it’s easy to add more!
+
+---
+
+## 💻 How Does it Work?
+
+1️⃣ You create a **universal JSON** describing your services in a normalized schema.  
+2️⃣ You pick a template for your target dashboard.  
+3️⃣ Dashuni renders the template with your data → you get the correct config format.  
+4️⃣ Paste it into your dashboard and enjoy.
+
+✅ No more manual re-entry.  
+✅ Consistency between all your dashboards.
+
+---
+
+## 🗂️ Example Universal Schema
+
+Here’s a snippet of your **one source of truth**:
 
 ```json
 {
   "site": {
-    "name": "My Home Lab Dashboard",
-    "description": "A dashboard for managing my home lab services",
-    "favicon": "https://example.com/favicon.ico",
+    "name": "My Homelab",
+    "description": "Central dashboard for all services",
     "theme": "auto",
-    "version": "1.0.0",
     "pages": [
       {
-        "title": "Infrastructure",
+        "title": "Main",
         "sections": [
           {
-            "title": "Monitoring",
+            "title": "Servers",
             "items": [
               {
-                "title": "Grafana",
-                "description": "Metrics and dashboards",
-                "url": "https://grafana.local",
-                "pingURL": "https://grafana.local/api/health",
-                "icon": "https://example.com/icons/grafana.png",
+                "title": "Dockge",
+                "url": "http://192.168.7.2:8080",
+                "icon": "https://example.com/icons/dockge.png",
+                "description": "Docker management UI",
+                "tags": ["docker", "admin"],
                 "target": "_blank"
               }
             ]
@@ -75,146 +94,187 @@ Your universal JSON should look like this:
 }
 ```
 
+You maintain this single file. Dashuni does the rest.
+
 ---
 
-## ✅ Template Data
+## ⚙️ Installation
 
-Every template is executed with **this data**:
+Clone the repo:
 
-```
-.
-├── Site  (*model.Site)
-│   ├── Name
-│   ├── Description
-│   ├── Favicon
-│   ├── Theme
-│   ├── Pages
-│       ├── Sections
-│           ├── Items
-└── FAMap (optional map[string]string)
+```bash
+git clone https://github.com/sottey/dashuni.git
+cd dashuni
 ```
 
-✅ Templates must use `.Site` prefix:
+Build the binary:
 
-```gotemplate
-.Site.Name
-.Site.Pages
+```bash
+go build -o dashuni
 ```
 
-✅ Example:
+Or install via Go:
 
-```gotemplate
-title: "{{ .Site.Name }}"
-theme: "{{ .Site.Theme }}"
+```bash
+go install github.com/sottey/dashuni@latest
 ```
 
 ---
 
-## ✅ Font Awesome Mapping
+## 🧰 CLI Usage
 
-Dashuni supports *optional* FA icon mappings for dashboards like **Homer** that don't accept icon URLs.
+To convert:
 
-⭐ Simply add this comment to the top of your template:
-
-```gotemplate
-{{/* requiresFA: true */}}
+```bash
+./dashuni convert --input mylab.json --mapping mappings/dashy.tmpl --output dashy-config.yml
 ```
 
-✅ Dashuni will automatically:
-- Detect the header
-- Load `./mappings/fa-mapping.json`
-- Make the mapping available to your template as `.FAMap`
+Options:
 
-✅ Example template logic:
+- `--input`: your universal JSON
+- `--mapping`: target dashboard template
+- `--output`: where to save the result
 
-```gotemplate
-{{ $faIcon := index $.FAMap .Title }}
-{{ if $faIcon }}
-icon: "{{ $faIcon }}"
-{{ else }}
-icon: "{{ .Icon }}"
-{{ end }}
+List your available templates:
+
+```bash
+./dashuni list
 ```
 
 ---
 
-## ✅ ./mappings/fa-mapping.json Example
+## 🎨 Templating System
+
+Dashuni is powered by **Go’s text/template** system.
+
+Your template defines exactly how your universal data maps to the dashboard config.
+
+**Example Dashy Template Snippet:**
+
+```gotemplate
+appConfig:
+  theme: "{{ .Site.Theme }}"
+sections:
+{{- range .Site.Pages }}
+  {{- range .Sections }}
+  - name: "{{ .Title }}"
+    items:
+      {{- range .Items }}
+      - title: "{{ .Title }}"
+        url: "{{ .URL }}"
+        icon: "{{ .Icon }}"
+      {{- end }}
+  {{- end }}
+{{- end }}
+```
+
+✅ Fully customizable  
+✅ Add your own templates for new dashboards!
+
+---
+
+## 🗺️ Icon Mapping
+
+Some dashboards don’t use raw URLs for icons but want standardized names like **mdi:docker** or **simple-icons:vaultwarden**.
+
+✅ Dashuni supports an optional **fa-mapping.json**:
 
 ```json
 {
-  "Dockge": "fas fa-server",
-  "FreshRSS": "fas fa-rss",
-  "VaultWarden": "fas fa-lock"
+  "Dockge": "mdi:docker",
+  "FreshRSS": "mdi:rss",
+  "VaultWarden": "simple-icons:vaultwarden"
 }
 ```
 
----
-## ⚠️ Notes for alternate icon sets
-
-When generating some configs (e.g. Mafl), Dashuni outputs `icon` entries like this:
-
-```yaml
-icon:
-  name: "simple-icons:<servicename>"
-  wrap: true
-```
-
-**Important:**
-- Some dashboards (e.g. Mafl) use icon libraries such as **Simple Icons**, **Material Design Icons (mdi)**, and others.
-- **Simple Icons** includes *only well-known brands*. Many self-hosted services (e.g., Dockge, FreshRSS, Hoarder) **do not have Simple Icons entries.**
-
-As a result:
-- If you use `simple-icons:<servicename>` for unsupported services, the icon **will not render** and you will see a fallback text badge.
-- You can solve this by:
-  - Replacing `simple-icons:<servicename>` with a known icon from another library (e.g., `mdi:docker`, `mdi:rss`).
-  - Manually uploading custom icons in the dashboard UI and adjusting the config to reference them.
-  - Maintaining an **icon mapping file** and customizing the output template to use it.
-
-If you want your dashboards to display icons consistently, it is recommended to:
-- Test your generated config in MAFL.
-- Adjust icon names to match supported icon sets.
-- Consider using an icon mapping strategy to override defaults.
-
-Refer to the MAFL documentation for a list of supported icons.
+Your template can use this to transform service names into correct icon identifiers.
 
 ---
 
-## ✅ Writing Templates
+## 📌 Note on Icons
 
-- Templates can embed mapping logic, target mapping, etc.  
-- Example target mapping in Dashy:
+**Important:** Not all icon libraries have all services!  
 
-```gotemplate
-{{ $targetMap := dict "_blank" "newtab" "_self" "sametab" "_top" "top" }}
-target: "{{ index $targetMap .Target }}"
-```
+For example:
+
+- **Simple Icons** only includes popular brands.
+- Self-hosted projects (like Dockge or FreshRSS) often lack official icons.
+
+You might need to:
+
+- Use **mdi** alternatives
+- Upload custom icons to your dashboard
+- Maintain your own mapping JSON
 
 ---
 
-## ✅ Example Commands
+## ⚡️ Adding New Dashboards
 
-✅ For Dashy:
+✅ Want to support another dashboard?  
+
+Just:
+
+1️⃣ Study the dashboard’s config format  
+2️⃣ Write a new Go template in `mappings/`  
+3️⃣ Use Dashuni to render your universal JSON into the new format
+
+No code changes required. Templates are *data-driven*.
+
+---
+
+## 🏗️ Building Dashuni
 
 ```bash
-./dashuni convert --input sample.json --mapping mappings/dashy.tmpl --output dashy.yml
+go build -o dashuni
 ```
 
-✅ For Homer (auto-detects FA mapping):
+Check:
 
 ```bash
-./dashuni convert --input sample.json --mapping mappings/homer.tmpl --output homer.yml
+./dashuni --help
 ```
 
 ---
 
-## ✅ Contributing
+## 🤝 Contributions Welcome
 
-⭐ PRs welcome  
-⭐ Add new dashboard templates  
-⭐ Help refine the schema  
+Want to help make Dashuni better?
+
+✅ Add new dashboard templates  
+✅ Improve existing mappings  
+✅ Fix bugs  
+✅ Enhance CLI UX  
+✅ Add tests
 
 ---
 
-## 📜 License
+### To contribute:
 
-MIT
+1. Fork the repo  
+2. Make your changes in a new branch  
+3. Submit a pull request  
+
+Let’s make dashboard switching *painless* for everyone!
+
+---
+
+## 🙏 Credits
+
+Dashuni is designed and maintained by **sottey**, with friendly help from ChatGPT (who wrote this readme!).
+
+Thanks to:
+
+- All the homelab dashboard developers
+- Go’s powerful `text/template` library
+- Open source communities everywhere
+
+---
+
+## 🪄 License
+
+MIT. See [LICENSE](./LICENSE).
+
+---
+
+> ✨ *Stop rewriting configs. Start enjoying your homelab.*  
+> **Happy dashboarding! 🚀**

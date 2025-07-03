@@ -1,0 +1,11 @@
+{{- range .Site.Pages }}
+  {{- range .Sections }}
+- {{ .Title }}:
+    {{- range .Items }}
+    - {{ .Title }}:
+        href: "{{ .URL }}"
+        description: "{{ .Description }}"
+        icon: "{{ .Icon }}"
+    {{- end }}
+  {{- end }}
+{{- end }}
