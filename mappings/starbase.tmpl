@@ -1,23 +1,25 @@
-{
-  "meta": {
-    "title": "{{ .Site.Name }}",
-    "description": "{{ .Site.Description }}"
-  },
-  "links": [
-    {{- $first := true -}}
-    {{- range .Site.Pages }}
-      {{- range .Sections }}
-        {{- range .Items }}
-          {{- if not $first }},{{ end }}
-          {
-            "title": "{{ .Title }}",
-            "subtitle": "{{ .Description }}",
-            "url": "{{ .URL }}",
-            "icon": "{{ .Icon }}"
-          }
-          {{- $first = false }}
-        {{- end }}
-      {{- end }}
+[
+  {{- $firstCategory := true -}}
+  {{- range .Site.Pages }}
+    {{- range .Sections }}
+      {{- if not $firstCategory }},{{ end }}
+      {
+        "category": "{{ .Title }}",
+        "services": [
+          {{- $firstService := true -}}
+          {{- range .Items }}
+            {{- if not $firstService }},{{ end }}
+            {
+              "name": "{{ .Title }}",
+              "description": "{{ .Description }}",
+              "uri": "{{ .URL }}",
+              "icon": "{{ .Icon }}"
+            }
+            {{- $firstService = false }}
+          {{- end }}
+        ]
+      }
+      {{- $firstCategory = false }}
     {{- end }}
-  ]
-}
+  {{- end }}
+]

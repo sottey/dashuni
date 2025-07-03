@@ -2,7 +2,15 @@
   "ui": {
     "name": "{{ .Site.Name }}",
     "desc": "{{ .Site.Description }}",
-    "icon": "{{ .Site.Favicon }}"
+    "icon": "{{ .Site.Favicon }}",
+    "wallpaper": "img/background.jpg",
+    "wallpaper_dark": "img/background-dark.jpg",
+    "dark_mode": "Auto",
+    "open_new_tab": true,
+    "ping_dots": true,
+    "blur": true,
+    "animations": true,
+    "trusted_domains": []
   },
   "services": [
     {{- $first := true -}}

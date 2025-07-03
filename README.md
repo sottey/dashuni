@@ -149,6 +149,35 @@ icon: "{{ .Icon }}"
 ```
 
 ---
+## ⚠️ Icon Notes for MAFL Configs
+
+When generating MAFL-compatible configs, Dashuni outputs `icon` entries like this:
+
+```yaml
+icon:
+  name: "simple-icons:<servicename>"
+  wrap: true
+```
+
+**Important:**
+- Some dashboards (e.g. Mafl) use icon libraries such as **Simple Icons**, **Material Design Icons (mdi)**, and others.
+- **Simple Icons** includes *only well-known brands*. Many self-hosted services (e.g., Dockge, FreshRSS, Hoarder) **do not have Simple Icons entries.**
+
+As a result:
+- If you use `simple-icons:<servicename>` for unsupported services, the icon **will not render** and you will see a fallback text badge.
+- You can solve this by:
+  - Replacing `simple-icons:<servicename>` with a known icon from another library (e.g., `mdi:docker`, `mdi:rss`).
+  - Manually uploading custom icons in the dashboard UI and adjusting the config to reference them.
+  - Maintaining an **icon mapping file** and customizing the output template to use it.
+
+If you want your dashboards to display icons consistently, it is recommended to:
+- Test your generated config in MAFL.
+- Adjust icon names to match supported icon sets.
+- Consider using an icon mapping strategy to override defaults.
+
+Refer to the MAFL documentation for a list of supported icons.
+
+---
 
 ## ✅ Writing Templates
 

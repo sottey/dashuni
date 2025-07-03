@@ -1,33 +1,65 @@
 {
-  "pages": [
-    {{- $firstPage := true -}}
-    {{- range .Site.Pages }}
-      {{- if not $firstPage }},{{ end }}
-      {
-        "name": "{{ .Title }}",
-        "layout": {
-          "desktop": [
-            {{- $firstItem := true -}}
-            {{- range .Sections }}
-              {{- range .Items }}
-                {{- if not $firstItem }},{{ end }}
-                {
-                  "label": "{{ .Title }}",
-                  "url": "{{ .URL }}",
-                  "icon": "{{ .Icon }}",
-                  {{- if .PingURL }}
-                  "healthUrl": "{{ .PingURL }}"
-                  {{- else }}
-                  "healthUrl": ""
-                  {{- end }}
-                }
-                {{- $firstItem = false }}
-              {{- end }}
-            {{- end }}
-          ]
-        }
-      }
-      {{- $firstPage = false }}
-    {{- end }}
-  ]
+  "layout": {
+    "desktop": [
+      {{- $firstItem := true -}}
+      {{- $counter := 1 -}}
+      {{- range .Site.Pages }}
+        {{- range .Sections }}
+          {{- range .Items }}
+            {{- if not $firstItem }},{{ end }}
+            {
+              "id": "item-{{ $counter }}",
+              "label": "{{ .Title }}",
+              "type": "app-shortcut",
+              "url": "{{ .URL }}",
+              "icon": {
+                "path": "./assets/{{ lower .Title }}.svg",
+                "name": "{{ .Title }}",
+                "source": "{{ .Icon }}"
+              },
+              "showLabel": true,
+              "adminOnly": false
+            }
+            {{- $firstItem = false }}
+            {{- $counter = add $counter 1 }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    ],
+    "mobile": [
+      {{- $firstItem := true -}}
+      {{- $counter := 1 -}}
+      {{- range .Site.Pages }}
+        {{- range .Sections }}
+          {{- range .Items }}
+            {{- if not $firstItem }},{{ end }}
+            {
+              "id": "item-{{ $counter }}",
+              "label": "{{ .Title }}",
+              "type": "app-shortcut",
+              "url": "{{ .URL }}",
+              "icon": {
+                "path": "./assets/{{ lower .Title }}.svg",
+                "name": "{{ .Title }}",
+                "source": "{{ .Icon }}"
+              },
+              "showLabel": true,
+              "adminOnly": false
+            }
+            {{- $firstItem = false }}
+            {{- $counter = add $counter 1 }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    ]
+  },
+  "isSetupComplete": true,
+  "search": true,
+  "searchProvider": {
+    "name": "Google",
+    "url": "https://www.google.com/search?q={query}"
+  },
+  "pages": [],
+  "title": "MY HOMELAB",
+  "showInternetIndicator": true
 }

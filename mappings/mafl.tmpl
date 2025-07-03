@@ -8,7 +8,11 @@ services:
     - title: "{{ .Title }}"
       description: "{{ .Description }}"
       link: "{{ .URL }}"
-      icon: "{{ .Icon }}"
+      icon:
+        name: "simple-icons:{{ lower .Title }}"
+        wrap: true
+      status:
+        enabled: true
     {{- end }}
   {{- end }}
 {{- end }}

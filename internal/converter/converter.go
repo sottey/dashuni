@@ -81,6 +81,9 @@ func templateFuncs() template.FuncMap {
 			}
 			return d, nil
 		},
+		"add": func(a, b int) int {
+			return a + b
+		},
 	}
 }
 
