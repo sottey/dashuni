@@ -149,9 +149,9 @@ icon: "{{ .Icon }}"
 ```
 
 ---
-## ⚠️ Icon Notes for MAFL Configs
+## ⚠️ Notes for alternate icon sets
 
-When generating MAFL-compatible configs, Dashuni outputs `icon` entries like this:
+When generating some configs (e.g. Mafl), Dashuni outputs `icon` entries like this:
 
 ```yaml
 icon:
