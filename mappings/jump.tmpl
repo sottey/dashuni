@@ -1,0 +1,50 @@
+{
+  "default": {
+    "nofollow": true,
+    "icon": "my-default-icon.png",
+    "newtab": false
+  },
+  "sites": [
+    {{- $first := true -}}
+    {{- /* First pass: all service items */ -}}
+    {{- range .Site.Pages }}
+      {{- range .Sections }}
+        {{- $sectionTag := .Title }}
+        {{- range .Items }}
+          {{- if not $first }},{{ end }}
+          {
+            "name": "{{ .Title }}",
+            "url": "{{ .URL }}",
+            {{- if .Description }}
+            "description": "{{ .Description }}",
+            {{- end }}
+            "icon": "{{ lower .Title }}",
+            "nofollow": true,
+            "newtab": {{ if eq .Target "_blank" }}true{{ else }}false{{ end }},
+            "tags": [
+              "{{ $sectionTag }}"
+              {{- range $i, $tag := .Tags }}, "{{ $tag }}"{{ end }}
+            ]
+          }
+          {{- $first = false }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+
+    {{- /* Second pass: add one home-tagged entry per section */ -}}
+    {{- range .Site.Pages }}
+      {{- range .Sections }}
+        {{- if not $first }},{{ end }}
+        {
+          "name": "{{ .Title }}",
+          "url": "./tag/{{ .Title }}",
+          "icon": "{{ .Title }}",
+          "nofollow": true,
+          "newtab": false,
+          "tags": ["home"]
+        }
+        {{- $first = false }}
+      {{- end }}
+    {{- end }}
+  ]
+}

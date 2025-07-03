@@ -49,6 +49,7 @@ Out of the box, Dashuni can generate configs for:
 - [**Starbase**](https://github.com/notclickable-jordan/starbase-80)  
 - [**Hiccup**](https://github.com/ashwin-pc/hiccup)  
 - [**GetHomepage**](https://github.com/gethomepage/homepage)
+- [**Jump**](https://github.com/daledavies/jump)
 
 And it’s easy to add more!
 
