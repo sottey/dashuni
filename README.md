@@ -20,6 +20,12 @@ Dashuni is a command-line tool written in Go. It takes a **universal JSON** desc
 
 ---
 
+## ‼️ What is Dashuni NOT?
+
+Dashuni is NOT for ALL dashboards. Because it focuses on writing config files in YAML, JSON, etc., it is not (yet) able to handle dashboards which use MongoDB, Postgres, or another storage mechanism that is not a plain text configuration.
+
+---
+
 ## ⭐️ Key Features
 
 ✨ Convert your homelab service list to **many dashboards**  
