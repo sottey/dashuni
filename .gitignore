@@ -36,3 +36,4 @@ samples/mylab.text
 samples/mylab.json
 output/** 
 .DS_Store
+release
