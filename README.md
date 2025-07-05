@@ -52,6 +52,7 @@ Out of the box, Dashuni can generate configs for:
 - [**Jump**](https://github.com/daledavies/jump)
 - [**Glance**](https://github.com/glanceapp/glance)
 - [**Easy-Gate**](https://github.com/wiredlush/easy-gate)
+- [**Dashlit**](https://github.com/codewec/dashlit)
 
 And it’s easy to add more!
 

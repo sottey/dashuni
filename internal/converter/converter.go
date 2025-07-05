@@ -10,6 +10,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/google/uuid"
 	"github.com/sottey/dashuni/internal/model"
 )
 
@@ -83,6 +84,9 @@ func templateFuncs() template.FuncMap {
 		},
 		"add": func(a, b int) int {
 			return a + b
+		},
+		"uuid": func() string {
+			return uuid.NewString()
 		},
 	}
 }

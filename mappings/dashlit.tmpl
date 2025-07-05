@@ -1,0 +1,34 @@
+{
+  "version": "0.0.6",
+  "groups": [
+    {{- $firstSection := true -}}
+    {{- range .Site.Pages }}
+      {{- range .Sections }}
+        {{- if not $firstSection }},{{ end }}
+        {
+          "id": "{{ uuid }}",
+          "title": "{{ .Title }}",
+          "description": "{{ .Title }} desc",
+          "items": [
+            {{- $firstItem := true -}}
+            {{- range .Items }}
+              {{- if not $firstItem }},{{ end }}
+              {
+                "id": "{{ uuid }}",
+                "title": "{{ .Title }}",
+                "description": "{{ .Description }}",
+                "url": "{{ .URL }}",
+                "target": "{{ .Target }}",
+                "showUrl": "hover",
+                "icon": "{{ .Icon }}",
+                "iconColor": "#808080"
+              }
+              {{- $firstItem = false }}
+            {{- end }}
+          ]
+        }
+        {{- $firstSection = false }}
+      {{- end }}
+    {{- end }}
+  ]
+}
