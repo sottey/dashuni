@@ -31,4 +31,8 @@ jobs:
         with:
           args: release --clean
         env:
+<<<<<<< HEAD
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+=======
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+>>>>>>> 81cd2e3 (setting up release workflow)
