@@ -1,20 +1,40 @@
-addr: 0.0.0.0:8880
-use_tls: false
-cert_file: ""
-key_file: ""
-behind_proxy: false
-title: {{ .Site.Name }}
-theme:
-  background: "#000000"
-  foreground: "#FFFFFF"
-services:
-  {{- range .Site.Pages }}
-    {{- range $section := .Sections }}
-      {{- range $item := $section.Items }}
-  - name: "{{ $item.Title }}"
-    category: "{{ $section.Title }}"
-    url: "{{ $item.URL }}"
-    icon: "{{ $item.Icon }}"
+{
+  "addr": "0.0.0.0:8080",
+  "use_tls": false,
+  "cert_file": "",
+  "key_file": "",
+  "behind_proxy": false,
+  "title": "{{ .Site.Name }}",
+  "theme": {
+    "background": "#FFFFFF",
+    "foreground": "#000000"
+  },
+  "groups": [
+    {
+      "name": "internal",
+      "subnet": "192.168.1.1/24"
+    },
+    {
+      "name": "vpn",
+      "subnet": "10.8.1.1/24"
+    }
+  ],
+  "services": [
+    {{- $first := true -}}
+    {{- range .Site.Pages }}
+      {{- range .Sections }}
+        {{- $category := .Title }}
+        {{- range .Items }}
+          {{- if not $first }},{{ end }}
+          {
+            "name": "{{ .Title }}",
+            "category": "{{ $category }}",
+            "url": "{{ .URL }}",
+            "groups": []
+          }
+          {{- $first = false }}
+        {{- end }}
       {{- end }}
     {{- end }}
-  {{- end }}
+  ]
+}

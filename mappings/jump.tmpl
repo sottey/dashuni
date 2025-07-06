@@ -18,7 +18,7 @@
             {{- if .Description }}
             "description": "{{ .Description }}",
             {{- end }}
-            "icon": "{{ lower .Title }}",
+            "icon": "{{ lower .Icon }}",
             "nofollow": true,
             "newtab": {{ if eq .Target "_blank" }}true{{ else }}false{{ end }},
             "tags": [
