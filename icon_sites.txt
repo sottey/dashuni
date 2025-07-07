@@ -1,0 +1,3 @@
+https://raw.githubusercontent.com/simple-icons/simple-icons/refs/heads/develop/icons/[[name]].svg
+https://cdn.jsdelivr.net/gh/selfhst/icons/png/[[name]].png
+https://simpleicons.org/icons/[[name]].svg
