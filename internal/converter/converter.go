@@ -65,9 +65,11 @@ func ApplyTemplate(site *model.Site, mappingPath string) (string, error) {
 
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"upper": strings.ToUpper,
-		"lower": strings.ToLower,
-		"trim":  strings.TrimSpace,
+		"upper":      strings.ToUpper,
+		"lower":      strings.ToLower,
+		"trim":       strings.TrimSpace,
+		"hasPrefix":  strings.HasPrefix,
+		"trimPrefix": strings.TrimPrefix,
 		"dict": func(values ...interface{}) (map[string]interface{}, error) {
 			if len(values)%2 != 0 {
 				return nil, fmt.Errorf("invalid dict call: odd number of args")

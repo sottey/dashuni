@@ -1,0 +1,29 @@
+[Settings]
+theme = light
+accent = orange
+background = None
+roles = admin,user,public_user
+home_access_groups = admin_only
+settings_access_groups = admin_only
+custom_app_title = DashMachine
+sidebar_default = open
+
+[sottey]
+role = admin
+password = 
+confirm_password = 
+
+{{- range .Site.Pages }}
+  {{- range .Sections }}
+    {{- range .Items }}
+[{{ .Title }}]
+prefix = {{ if hasPrefix .URL "https://" }}https://{{ else }}http://{{ end }}
+url = {{ .URL | trimPrefix "https://" | trimPrefix "http://" }}
+icon = {{ .Icon }}
+sidebar_icon = {{ .Icon }}
+description = {{ .Description }}
+open_in = {{ if eq .Target "_blank" }}new_tab{{ else }}this_tab{{ end }}
+
+    {{- end }}
+  {{- end }}
+{{- end }}

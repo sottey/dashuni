@@ -20,7 +20,7 @@ sections:
         icon: "{{ .Icon }}"
         url: "{{ .URL }}"
         target: "{{ index $targetMap .Target }}"
-        statusCheck: "{{ .PingURL }}"
+        statusCheck: false
       {{- end }}
   {{- end }}
 {{- end }}
