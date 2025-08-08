@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -89,6 +90,14 @@ func templateFuncs() template.FuncMap {
 		},
 		"uuid": func() string {
 			return uuid.NewString()
+		},
+		"iconName": func(iconURL string) string {
+			if iconURL == "" {
+				return ""
+			}
+			parts := strings.Split(iconURL, "/")
+			name := parts[len(parts)-1]
+			return strings.TrimSuffix(name, filepath.Ext(name))
 		},
 	}
 }

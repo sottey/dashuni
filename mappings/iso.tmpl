@@ -1,0 +1,40 @@
+{
+  "title": "{{ .Site.Name }}",
+  "services": [
+    {{- $index := 0 }}
+    {{- range .Site.Pages }}
+      {{- range .Sections }}
+        {{- range .Items }}
+          {{- if $index }},{{ end }}
+          {
+            "order": {{ add $index 1 }},
+            "icon": "{{ iconName .Icon }}",
+            "label": "{{ .Title }}",
+            "href": "{{ .URL }}"
+          }
+          {{- $index = add $index 1 }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  ],
+  "locale": "en",
+  "theme": "sunshine",
+  "greetings": [
+    {
+      "message": "Cottage on Iso"
+    }
+  ],
+  "pageLoadAnimation": false,
+  "search": {
+    "enabled": false,
+    "engine": "custom",
+    "engineUrl": "https://kagi.com/search?q=[q]",
+    "placeholder": "Search Kagi..."
+  },
+  "backgroundImage": {
+    "light": "",
+    "dark": "",
+    "opacity": 50,
+    "blur": "lg"
+  }
+}
