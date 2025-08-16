@@ -1,0 +1,17 @@
+[
+{{- $first := true -}}
+{{- range .Site.Pages }}
+  {{- range .Sections }}
+    {{- $category := .Title }}
+    {{- range .Items }}
+      {{- if not $first }},{{ end -}}{{- $first = false -}}
+      {
+        "name": "{{ .ShortTitle }}",
+        "url": "{{ .URL }}",
+        "icon": "dashboard",
+        "category": "{{ $category }}"{{ if eq .Target "_blank" }}, "opened": 1{{ end }}
+      }
+    {{- end }}
+  {{- end }}
+{{- end }}
+]
